@@ -21,7 +21,7 @@ print("Connecting to WiFi...", end="")
 while not wlan.isconnected():
     print(".", end="")
     time.sleep(0.5)
-print("Connected with IP:", wlan.ifconfig()[0])
+print("\nConnected with IP:", wlan.ifconfig()[0])
 
 # ====== Setup LEDs ======
 np = neopixel.NeoPixel(Pin(LED_PIN), NUM_LEDS)
@@ -40,6 +40,13 @@ while True:
         universe = data[14] + (data[15] << 8)
         length = (data[16] << 8) + data[17]
         dmxdata = data[18:18+length]
+
+        # === Print received Art-Net info ===
+        print("Received Art-Net packet:")
+        print("  From:", addr)
+        print("  Universe:", universe)
+        print("  Data Length:", length)
+        print("  First channels:", list(dmxdata[:10]))  # Print first 10 channel values
 
         if universe == UNIVERSE:
             # Update LEDs
